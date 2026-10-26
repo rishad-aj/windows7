@@ -1,0 +1,6 @@
+{
+  "name": "Aero7 Launcher",
+  "description": "An authentic Windows 7 Aero Glass desktop launcher for Android with Start Menu, Superbar Taskbar, Aero Peek, Windows Explorer, Control Panel, Desktop Gadgets, and Default Home Launcher support.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

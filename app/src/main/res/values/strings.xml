@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Aero7 Launcher</string>
+    <string name="start_button_desc">Windows 7 Start Orb</string>
+    <string name="show_desktop_desc">Aero Peek Show Desktop</string>
+    <string name="search_programs_hint">Search programs and files</string>
+    <string name="all_programs">All Programs</string>
+    <string name="back_to_pinned">Back</string>
+    <string name="shut_down">Shut down</string>
+    <string name="computer">Computer</string>
+    <string name="documents">Documents</string>
+    <string name="pictures">Pictures</string>
+    <string name="music">Music</string>
+    <string name="control_panel">Control Panel</string>
+    <string name="devices_and_printers">Devices and Printers</string>
+    <string name="default_programs">Default Programs</string>
+    <string name="help_and_support">Help and Support</string>
+    <string name="recycle_bin">Recycle Bin</string>
+    <string name="network">Network</string>
+    <string name="sticky_notes">Sticky Notes</string>
+    <string name="command_prompt">Command Prompt</string>
+    <string name="calculator">Calculator</string>
+    <string name="personalize">Personalize</string>
+    <string name="gadgets">Gadgets</string>
+    <string name="set_default_launcher">Set as Default Launcher</string>
+    <string name="task_manager">Task Manager</string>
+    <string name="snipping_tool">Aero Tour Gallery</string>
+</resources>

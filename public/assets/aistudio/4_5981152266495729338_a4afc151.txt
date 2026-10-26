@@ -1,0 +1,92 @@
+name: Build GrAnimation_V1 APK
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Ensure Gradle Wrapper
+        run: |
+          if [ ! -f ./gradlew ]; then
+            gradle wrapper
+          fi
+          chmod +x gradlew
+
+      - name: Restore Permanent Keystore
+        run: |
+          if [ -f debug.keystore.base64 ]; then
+            base64 -d debug.keystore.base64 > debug.keystore
+          else
+            echo "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" | base64 -d > debug.keystore
+          fi
+          mkdir -p ~/.android
+          cp debug.keystore ~/.android/debug.keystore
+
+      - name: Setup Environment Variables
+        run: |
+          if [ ! -f .env ] && [ -f .env.example ]; then
+            cp .env.example .env
+          fi
+
+      - name: Build Debug APK
+        id: build_apk
+        env:
+          VERSION_CODE: ${{ github.run_number }}
+        run: ./gradlew assembleDebug --stacktrace
+
+      - name: Prepare APK Asset
+        run: |
+          mkdir -p release-assets
+          APK_FILE=$(find app/build/outputs/apk/debug/ -name "*.apk" | head -n 1)
+          if [ -n "$APK_FILE" ]; then
+            cp "$APK_FILE" release-assets/GrAnimation_V1.apk
+            echo "Successfully prepared GrAnimation_V1.apk from $APK_FILE"
+          else
+            echo "Error: No APK found in app/build/outputs/apk/debug/"
+            exit 1
+          fi
+
+      - name: Publish Direct APK to GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: always() && steps.build_apk.outcome == 'success'
+        with:
+          tag_name: latest
+          name: "GrAnimation Studio Latest Build (GrAnimation_V1.apk)"
+          body: |
+            ### 🎨 GrAnimation Studio Android APK
+            - **Direct Download**: Download `GrAnimation_V1.apk` below directly to your phone.
+            - **Commit**: `${{ github.sha }}`
+            - **Build Date**: `${{ github.event.head_commit.timestamp || 'Latest' }}`
+          prerelease: false
+          make_latest: true
+          files: release-assets/GrAnimation_V1.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload APK Artifact (Optional Fallback)
+        uses: actions/upload-artifact@v4
+        continue-on-error: true
+        with:
+          name: GrAnimation_V1
+          path: release-assets/GrAnimation_V1.apk
+          retention-days: 1

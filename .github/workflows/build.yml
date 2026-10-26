@@ -1,0 +1,93 @@
+name: Build Aero7_Launcher APK
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Ensure Gradle Wrapper
+        run: |
+          if [ ! -f ./gradlew ]; then
+            gradle wrapper
+          fi
+          chmod +x gradlew
+
+      - name: Restore Permanent Keystore
+        run: |
+          if [ -f debug.keystore.base64 ]; then
+            base64 -d debug.keystore.base64 > debug.keystore
+          else
+            echo "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" | base64 -d > debug.keystore
+          fi
+          mkdir -p ~/.android
+          cp debug.keystore ~/.android/debug.keystore
+
+      - name: Setup Environment Variables
+        run: |
+          if [ ! -f .env ] && [ -f .env.example ]; then
+            cp .env.example .env
+          fi
+
+      - name: Build Debug APK
+        id: build_apk
+        env:
+          VERSION_CODE: ${{ github.run_number }}
+        run: ./gradlew assembleDebug --stacktrace
+
+      - name: Prepare APK Asset
+        run: |
+          mkdir -p release-assets
+          APK_FILE=$(find app/build/outputs/apk/debug/ -name "*.apk" | head -n 1)
+          if [ -n "$APK_FILE" ]; then
+            cp "$APK_FILE" release-assets/Aero7_Launcher.apk
+            echo "Successfully prepared Aero7_Launcher.apk from $APK_FILE"
+          else
+            echo "Error: No APK found in app/build/outputs/apk/debug/"
+            exit 1
+          fi
+
+      - name: Publish Direct APK to GitHub Release
+        uses: softprops/action-gh-release@v2
+        if: always() && steps.build_apk.outcome == 'success'
+        with:
+          tag_name: latest
+          name: "Aero7 Windows 7 Launcher Latest Build (Aero7_Launcher.apk)"
+          body: |
+            ### 🪟 Aero7 Windows 7 Launcher Android APK
+            - **Direct Download**: Download `Aero7_Launcher.apk` below directly to your phone.
+            - **In-Place Update Ready**: Signed with the permanent keystore and auto-incremented `versionCode` (`#${{ github.run_number }}`) so you can install updates directly without uninstalling.
+            - **Commit**: `${{ github.sha }}`
+            - **Build Date**: `${{ github.event.head_commit.timestamp || 'Latest' }}`
+          prerelease: false
+          make_latest: true
+          files: release-assets/Aero7_Launcher.apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload APK Artifact (Optional Fallback)
+        uses: actions/upload-artifact@v4
+        continue-on-error: true
+        with:
+          name: Aero7_Launcher
+          path: release-assets/Aero7_Launcher.apk
+          retention-days: 1
