@@ -3,6 +3,9 @@ name: Build Aero7_Launcher APK
 on:
   push:
     branches: [ "main", "master" ]
+    paths-ignore:
+      - 'Aero7_Launcher.apk'
+      - 'release-assets/**'
   workflow_dispatch:
 
 jobs:
@@ -60,11 +63,22 @@ jobs:
           APK_FILE=$(find app/build/outputs/apk/debug/ -name "*.apk" | head -n 1)
           if [ -n "$APK_FILE" ]; then
             cp "$APK_FILE" release-assets/Aero7_Launcher.apk
+            cp "$APK_FILE" Aero7_Launcher.apk
             echo "Successfully prepared Aero7_Launcher.apk from $APK_FILE"
           else
             echo "Error: No APK found in app/build/outputs/apk/debug/"
             exit 1
           fi
+
+      - name: Add APK File Directly to GitHub Repository
+        if: always() && steps.build_apk.outcome == 'success'
+        continue-on-error: true
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -f Aero7_Launcher.apk
+          git diff --staged --quiet || git commit -m "Update compiled Aero7_Launcher.apk (v1.0.${{ github.run_number }}) [skip ci]"
+          git push
 
       - name: Publish Direct APK to GitHub Release
         uses: softprops/action-gh-release@v2
